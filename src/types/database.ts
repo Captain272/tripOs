@@ -69,6 +69,9 @@ export interface TripRow {
   created_by: UUID;
   visibility: TripVisibility;
   status: TripStatus;
+  drive_folder_id: string | null;
+  drive_folder_name: string | null;
+  drive_last_synced_at: ISODate | null;
   created_at: ISODate;
   updated_at: ISODate;
 }
@@ -97,9 +100,25 @@ export interface ItineraryItemRow {
   end_time: string | null;
   category: ItineraryCategory | null;
   estimated_cost: number | null;
+  image_url: string | null;
+  image_query: string | null;
+  sort_order: number | null;
   created_by: UUID | null;
   created_at: ISODate;
   updated_at: ISODate;
+}
+
+export type ChatRole = "user" | "assistant" | "system";
+
+export interface TripChatMessageRow {
+  id: UUID;
+  trip_id: UUID;
+  user_id: UUID | null;
+  role: ChatRole;
+  content: string;
+  quick_replies: string[] | null;
+  tool_summary: { added?: number; updated?: number; deleted?: number } | null;
+  created_at: ISODate;
 }
 
 export interface PollRow {
@@ -184,6 +203,7 @@ export interface TripMediaRow {
   trip_id: UUID;
   uploaded_by: UUID | null;
   file_url: string;
+  thumbnail_url: string | null;
   file_type: MediaType | null;
   caption: string | null;
   taken_at: ISODate | null;
@@ -191,7 +211,19 @@ export interface TripMediaRow {
   latitude: number | null;
   longitude: number | null;
   day_number: number | null;
+  itinerary_item_id: UUID | null;
+  drive_file_id: string | null;
   created_at: ISODate;
+}
+
+export interface GoogleOauthTokenRow {
+  user_id: UUID;
+  access_token: string;
+  refresh_token: string | null;
+  expires_at: ISODate | null;
+  scope: string | null;
+  created_at: ISODate;
+  updated_at: ISODate;
 }
 
 export interface TripCapsuleRow {
