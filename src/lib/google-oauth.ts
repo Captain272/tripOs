@@ -98,7 +98,10 @@ export async function saveTokens(userId: string, tokens: TokenResponse): Promise
     scope: tokens.scope ?? null,
   };
   if (tokens.refresh_token) update.refresh_token = tokens.refresh_token;
-  await admin.from("google_oauth_tokens").upsert(update, { onConflict: "user_id" });
+  const { error } = await admin
+    .from("google_oauth_tokens")
+    .upsert(update, { onConflict: "user_id" });
+  if (error) throw new Error(`saveTokens failed: ${error.message}`);
 }
 
 export async function deleteTokens(userId: string): Promise<void> {
